@@ -1,609 +1,413 @@
-# Social Media App
+# Social Media App - Simple & Easy
 
-A full-stack social media application for Android with features including user authentication, posts, likes, comments, sharing, Q&A, and real-time chat.
+A simple social media app for Android built with React Native and Node.js backend. Post updates, like, comment, and chat with friends!
 
 ## 📱 Features
 
-- **User Authentication**: Secure signup/login with JWT tokens
-- **Posts**: Create, edit, and delete posts with images
-- **Interactions**: Like, comment, and share posts
-- **Q&A Forum**: Ask and answer questions
-- **Real-time Chat**: One-on-one messaging
-- **User Profiles**: View and edit user profiles
-- **Feed**: Personalized content feed
-- **Notifications**: Real-time updates for interactions
+- Login & Signup
+- Create posts with images
+- Like and comment on posts
+- View user profiles
+- Real-time chat
+- Edit your profile
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Node.js** with Express.js
-- **MongoDB** with Mongoose ODM
-- **Socket.io** for real-time chat
-- **JWT** for authentication
-- **Multer** for file uploads
-- **Bcrypt** for password hashing
+**Backend:** Node.js + Express + MongoDB + Socket.io  
+**Frontend:** React Native (Android only)
 
-### Android Frontend
-- **Kotlin**
-- **Jetpack Compose** for UI
-- **Retrofit** for API calls
-- **Room Database** for local caching
-- **Coil** for image loading
-- **Socket.io Client** for real-time features
-- **DataStore** for secure token storage
-- **Hilt** for dependency injection
-
-## 📋 Prerequisites
-
-### Backend Development
-- Node.js (v16 or higher)
-- MongoDB (v5.0 or higher) or MongoDB Atlas account
-- npm or yarn package manager
-
-### Android Development
-- Android Studio (latest stable version)
-- JDK 11 or higher
-- Android SDK (API level 24 or higher)
-- Gradle 8.0+
-
-## 📁 Project Structure
+## 📁 Simple Project Structure
 
 ```
 social-media-app/
 │
-├── backend/                          # Backend server
-│   ├── src/
-│   │   ├── config/
-│   │   │   ├── database.js          # MongoDB connection
-│   │   │   ├── cloudinary.js        # Image upload config
-│   │   │   └── socket.js            # Socket.io configuration
-│   │   │
-│   │   ├── models/
-│   │   │   ├── User.js              # User schema
-│   │   │   ├── Post.js              # Post schema
-│   │   │   ├── Comment.js           # Comment schema
-│   │   │   ├── Question.js          # Q&A schema
-│   │   │   ├── Message.js           # Chat message schema
-│   │   │   └── Notification.js      # Notification schema
-│   │   │
-│   │   ├── controllers/
-│   │   │   ├── authController.js    # Authentication logic
-│   │   │   ├── postController.js    # Post CRUD operations
-│   │   │   ├── userController.js    # User profile operations
-│   │   │   ├── questionController.js # Q&A operations
-│   │   │   ├── chatController.js    # Chat operations
-│   │   │   └── notificationController.js
-│   │   │
-│   │   ├── routes/
-│   │   │   ├── authRoutes.js
-│   │   │   ├── postRoutes.js
-│   │   │   ├── userRoutes.js
-│   │   │   ├── questionRoutes.js
-│   │   │   ├── chatRoutes.js
-│   │   │   └── notificationRoutes.js
-│   │   │
-│   │   ├── middleware/
-│   │   │   ├── authMiddleware.js    # JWT verification
-│   │   │   ├── uploadMiddleware.js  # File upload handling
-│   │   │   └── errorMiddleware.js   # Error handling
-│   │   │
-│   │   ├── utils/
-│   │   │   ├── tokenUtils.js        # JWT generation/validation
-│   │   │   ├── validators.js        # Input validation
-│   │   │   └── helpers.js           # Helper functions
-│   │   │
-│   │   ├── socket/
-│   │   │   ├── chatSocket.js        # Chat socket handlers
-│   │   │   └── notificationSocket.js
-│   │   │
-│   │   └── server.js                # Main entry point
+├── backend/                    # Server code
+│   ├── models/
+│   │   ├── User.js            # User database model
+│   │   ├── Post.js            # Post database model
+│   │   └── Message.js         # Chat message model
 │   │
-│   ├── uploads/                     # Uploaded files (local)
-│   ├── .env                         # Environment variables
-│   ├── .gitignore
-│   ├── package.json
-│   └── README.md
+│   ├── routes/
+│   │   ├── auth.js            # Login/Signup routes
+│   │   ├── posts.js           # Post routes
+│   │   ├── users.js           # User profile routes
+│   │   └── chat.js            # Chat routes
+│   │
+│   ├── middleware/
+│   │   └── auth.js            # Check if user is logged in
+│   │
+│   ├── uploads/               # Uploaded images folder
+│   ├── server.js              # Main server file
+│   ├── .env                   # Secret keys
+│   └── package.json
 │
-└── android/                          # Android application
-    ├── app/
-    │   ├── src/
-    │   │   ├── main/
-    │   │   │   ├── java/com/yourapp/socialmedia/
-    │   │   │   │   │
-    │   │   │   │   ├── data/
-    │   │   │   │   │   ├── local/
-    │   │   │   │   │   │   ├── dao/
-    │   │   │   │   │   │   │   ├── PostDao.kt
-    │   │   │   │   │   │   │   └── UserDao.kt
-    │   │   │   │   │   │   ├── database/
-    │   │   │   │   │   │   │   └── AppDatabase.kt
-    │   │   │   │   │   │   └── preferences/
-    │   │   │   │   │   │       └── UserPreferences.kt
-    │   │   │   │   │   │
-    │   │   │   │   │   ├── remote/
-    │   │   │   │   │   │   ├── api/
-    │   │   │   │   │   │   │   ├── AuthApi.kt
-    │   │   │   │   │   │   │   ├── PostApi.kt
-    │   │   │   │   │   │   │   ├── UserApi.kt
-    │   │   │   │   │   │   │   ├── QuestionApi.kt
-    │   │   │   │   │   │   │   └── ChatApi.kt
-    │   │   │   │   │   │   ├── dto/
-    │   │   │   │   │   │   │   ├── requests/
-    │   │   │   │   │   │   │   └── responses/
-    │   │   │   │   │   │   └── socket/
-    │   │   │   │   │   │       └── SocketManager.kt
-    │   │   │   │   │   │
-    │   │   │   │   │   ├── repository/
-    │   │   │   │   │   │   ├── AuthRepository.kt
-    │   │   │   │   │   │   ├── PostRepository.kt
-    │   │   │   │   │   │   ├── UserRepository.kt
-    │   │   │   │   │   │   ├── QuestionRepository.kt
-    │   │   │   │   │   │   └── ChatRepository.kt
-    │   │   │   │   │   │
-    │   │   │   │   │   └── models/
-    │   │   │   │   │       ├── User.kt
-    │   │   │   │   │       ├── Post.kt
-    │   │   │   │   │       ├── Comment.kt
-    │   │   │   │   │       ├── Question.kt
-    │   │   │   │   │       └── Message.kt
-    │   │   │   │   │
-    │   │   │   │   ├── ui/
-    │   │   │   │   │   ├── theme/
-    │   │   │   │   │   │   ├── Color.kt
-    │   │   │   │   │   │   ├── Theme.kt
-    │   │   │   │   │   │   └── Type.kt
-    │   │   │   │   │   │
-    │   │   │   │   │   ├── components/
-    │   │   │   │   │   │   ├── PostCard.kt
-    │   │   │   │   │   │   ├── CommentItem.kt
-    │   │   │   │   │   │   ├── UserAvatar.kt
-    │   │   │   │   │   │   └── LoadingIndicator.kt
-    │   │   │   │   │   │
-    │   │   │   │   │   ├── screens/
-    │   │   │   │   │   │   ├── auth/
-    │   │   │   │   │   │   │   ├── LoginScreen.kt
-    │   │   │   │   │   │   │   └── SignupScreen.kt
-    │   │   │   │   │   │   ├── home/
-    │   │   │   │   │   │   │   ├── HomeScreen.kt
-    │   │   │   │   │   │   │   └── FeedScreen.kt
-    │   │   │   │   │   │   ├── post/
-    │   │   │   │   │   │   │   ├── CreatePostScreen.kt
-    │   │   │   │   │   │   │   └── PostDetailScreen.kt
-    │   │   │   │   │   │   ├── profile/
-    │   │   │   │   │   │   │   ├── ProfileScreen.kt
-    │   │   │   │   │   │   │   └── EditProfileScreen.kt
-    │   │   │   │   │   │   ├── question/
-    │   │   │   │   │   │   │   ├── QuestionListScreen.kt
-    │   │   │   │   │   │   │   ├── AskQuestionScreen.kt
-    │   │   │   │   │   │   │   └── QuestionDetailScreen.kt
-    │   │   │   │   │   │   └── chat/
-    │   │   │   │   │   │       ├── ChatListScreen.kt
-    │   │   │   │   │   │       └── ChatScreen.kt
-    │   │   │   │   │   │
-    │   │   │   │   │   └── navigation/
-    │   │   │   │   │       └── NavGraph.kt
-    │   │   │   │   │
-    │   │   │   │   ├── viewmodel/
-    │   │   │   │   │   ├── AuthViewModel.kt
-    │   │   │   │   │   ├── PostViewModel.kt
-    │   │   │   │   │   ├── UserViewModel.kt
-    │   │   │   │   │   ├── QuestionViewModel.kt
-    │   │   │   │   │   └── ChatViewModel.kt
-    │   │   │   │   │
-    │   │   │   │   ├── di/
-    │   │   │   │   │   ├── AppModule.kt
-    │   │   │   │   │   ├── NetworkModule.kt
-    │   │   │   │   │   └── DatabaseModule.kt
-    │   │   │   │   │
-    │   │   │   │   ├── utils/
-    │   │   │   │   │   ├── Constants.kt
-    │   │   │   │   │   ├── Extensions.kt
-    │   │   │   │   │   └── Resource.kt
-    │   │   │   │   │
-    │   │   │   │   └── MainActivity.kt
-    │   │   │   │
-    │   │   │   ├── res/
-    │   │   │   │   ├── drawable/
-    │   │   │   │   ├── values/
-    │   │   │   │   │   ├── colors.xml
-    │   │   │   │   │   ├── strings.xml
-    │   │   │   │   │   └── themes.xml
-    │   │   │   │   └── xml/
-    │   │   │   │       └── network_security_config.xml
-    │   │   │   │
-    │   │   │   └── AndroidManifest.xml
-    │   │   │
-    │   │   └── test/
-    │   │       └── java/
+└── mobile/                     # React Native App
+    ├── src/
+    │   ├── screens/           # All app screens
+    │   │   ├── LoginScreen.js
+    │   │   ├── SignupScreen.js
+    │   │   ├── HomeScreen.js
+    │   │   ├── CreatePostScreen.js
+    │   │   ├── ProfileScreen.js
+    │   │   └── ChatScreen.js
     │   │
-    │   ├── build.gradle.kts
-    │   └── proguard-rules.pro
+    │   ├── components/        # Reusable UI pieces
+    │   │   ├── PostCard.js
+    │   │   ├── Comment.js
+    │   │   └── Button.js
+    │   │
+    │   ├── api/              # Talk to server
+    │   │   └── api.js
+    │   │
+    │   ├── navigation/       # Screen navigation
+    │   │   └── AppNavigator.js
+    │   │
+    │   └── utils/           # Helper functions
+    │       └── storage.js   # Save user data
     │
-    ├── gradle/
-    ├── build.gradle.kts
-    ├── settings.gradle.kts
-    ├── gradle.properties
-    └── README.md
+    ├── android/             # Android build files
+    ├── App.js               # Main app file
+    ├── package.json
+    └── .env
 ```
 
-## 🚀 Getting Started
+## 🚀 Setup Instructions
 
-### Backend Setup
+### Step 1: Install Required Software
 
-1. **Clone the repository**
+1. **Install Node.js**
+   - Download from: https://nodejs.org/ (get LTS version)
+   - Install it on your computer
+
+2. **Install MongoDB**
+   - Download from: https://www.mongodb.com/try/download/community
+   - Install and keep it running
+
+3. **Install Android Studio**
+   - Download from: https://developer.android.com/studio
+   - During installation, make sure to install:
+     - Android SDK
+     - Android SDK Platform
+     - Android Virtual Device (AVD)
+
+4. **Setup Java (JDK)**
+   - Android Studio will install JDK automatically
+   - Or download JDK 11 from: https://www.oracle.com/java/technologies/downloads/
+
+### Step 2: Setup Backend Server
+
+1. **Create project folder**
 ```bash
-git clone <your-repo-url>
-cd social-media-app/backend
+mkdir social-media-app
+cd social-media-app
+mkdir backend
+cd backend
 ```
 
-2. **Install dependencies**
+2. **Initialize Node.js project**
 ```bash
-npm install
+npm init -y
 ```
 
-3. **Create `.env` file in the backend directory**
-```env
-# Server Configuration
+3. **Install backend packages**
+```bash
+npm install express mongoose bcryptjs jsonwebtoken cors dotenv multer socket.io
+npm install nodemon --save-dev
+```
+
+4. **Create `.env` file** (in backend folder)
+```
 PORT=5000
-NODE_ENV=development
-
-# Database
 MONGODB_URI=mongodb://localhost:27017/socialmedia
-# Or use MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/socialmedia
-
-# JWT Secret
-JWT_SECRET=your_super_secret_jwt_key_here_change_this
-JWT_EXPIRE=7d
-
-# File Upload (Optional - for Cloudinary)
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-# CORS
-CLIENT_URL=http://localhost:3000
+JWT_SECRET=mysecretkey123456789
 ```
 
-4. **Start MongoDB** (if running locally)
-```bash
-# macOS/Linux
-mongod
-
-# Windows
-"C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe"
+5. **Update package.json** (add this in scripts section)
+```json
+"scripts": {
+  "start": "node server.js",
+  "dev": "nodemon server.js"
+}
 ```
 
-5. **Run the backend server**
+6. **Start the server**
 ```bash
-# Development mode with auto-restart
 npm run dev
+```
+Server will run on http://localhost:5000
 
-# Production mode
+### Step 3: Setup React Native App
+
+1. **Install React Native CLI**
+```bash
+npm install -g react-native-cli
+```
+
+2. **Create React Native project**
+```bash
+cd ..
+npx react-native init mobile
+cd mobile
+```
+
+3. **Install app packages**
+```bash
+npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs
+npm install react-native-screens react-native-safe-area-context
+npm install axios socket.io-client
+npm install @react-native-async-storage/async-storage
+npm install react-native-image-picker
+npm install react-native-dotenv
+npm install react-native-gesture-handler react-native-reanimated
+```
+
+4. **Create `.env` file** (in mobile folder)
+```
+API_URL=http://10.0.2.2:5000
+```
+Note: `10.0.2.2` is special IP for Android emulator to reach your computer
+
+5. **Link native dependencies**
+```bash
+cd android
+./gradlew clean
+cd ..
+```
+
+### Step 4: Run the App
+
+1. **Start Metro (React Native bundler)**
+```bash
 npm start
 ```
 
-The backend server will start at `http://localhost:5000`
+2. **In a new terminal, run Android app**
+```bash
+npm run android
+```
 
-### Android Setup
+This will:
+- Build the APK
+- Install it on emulator/phone
+- Launch the app
 
-1. **Open Android Studio**
-   - Open Android Studio
-   - Select "Open an Existing Project"
-   - Navigate to `social-media-app/android`
+## 📱 Building APK for Phone
 
-2. **Update API Base URL**
-   
-   Open `app/src/main/java/com/yourapp/socialmedia/utils/Constants.kt` and update:
-   ```kotlin
-   object Constants {
-       // For emulator
-       const val BASE_URL = "http://10.0.2.2:5000/api/"
-       
-       // For physical device (use your computer's IP)
-       // const val BASE_URL = "http://192.168.1.XXX:5000/api/"
-   }
-   ```
+### Build Debug APK (for testing)
+```bash
+cd android
+./gradlew assembleDebug
+```
+APK location: `android/app/build/outputs/apk/debug/app-debug.apk`
 
-3. **Sync Gradle files**
-   - Wait for Gradle sync to complete
-   - Resolve any dependency issues
+### Build Release APK (for distribution)
 
-4. **Run the app**
-   - Connect an Android device or start an emulator
-   - Click the "Run" button in Android Studio
-   - Select your device/emulator
+1. **Generate a signing key**
+```bash
+cd android/app
+keytool -genkeypair -v -storetype PKCS12 -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+```
 
-## 📦 Dependencies
+2. **Edit `android/gradle.properties`** (add these lines)
+```
+MYAPP_RELEASE_STORE_FILE=my-release-key.keystore
+MYAPP_RELEASE_KEY_ALIAS=my-key-alias
+MYAPP_RELEASE_STORE_PASSWORD=your_password
+MYAPP_RELEASE_KEY_PASSWORD=your_password
+```
 
-### Backend Dependencies
-```json
-{
-  "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.5.0",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "socket.io": "^4.7.2",
-    "multer": "^1.4.5-lts.1",
-    "cloudinary": "^1.41.0",
-    "dotenv": "^16.3.1",
-    "cors": "^2.8.5",
-    "express-validator": "^7.0.1",
-    "helmet": "^7.0.0",
-    "morgan": "^1.10.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  }
+3. **Edit `android/app/build.gradle`** (add in `android {}` section)
+```gradle
+signingConfigs {
+    release {
+        if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+            storeFile file(MYAPP_RELEASE_STORE_FILE)
+            storePassword MYAPP_RELEASE_STORE_PASSWORD
+            keyAlias MYAPP_RELEASE_KEY_ALIAS
+            keyPassword MYAPP_RELEASE_KEY_PASSWORD
+        }
+    }
+}
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
 }
 ```
 
-### Android Dependencies (in `build.gradle.kts`)
-```kotlin
-dependencies {
-    // Core Android
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    
-    // Compose
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2024.01.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    
-    // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.6")
-    
-    // Retrofit for API calls
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    
-    // Socket.io
-    implementation("io.socket:socket.io-client:2.1.0")
-    
-    // Room Database
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-    
-    // Hilt for Dependency Injection
-    implementation("com.google.dagger:hilt-android:2.50")
-    kapt("com.google.dagger:hilt-compiler:2.50")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-    
-    // Coil for Image Loading
-    implementation("io.coil-kt:coil-compose:2.5.0")
-    
-    // DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-}
+4. **Build release APK**
+```bash
+cd android
+./gradlew assembleRelease
 ```
+APK location: `android/app/build/outputs/apk/release/app-release.apk`
 
-## 🔧 Configuration
+5. **Transfer APK to your phone**
+   - Copy the APK file to your phone
+   - Open it on your phone to install
+   - You may need to enable "Install from Unknown Sources"
 
-### Network Security (Android)
+## 🔧 Android Permissions
 
-Create `res/xml/network_security_config.xml` to allow HTTP connections in development:
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <base-config cleartextTrafficPermitted="true">
-        <trust-anchors>
-            <certificates src="system" />
-        </trust-anchors>
-    </base-config>
-</network-security-config>
-```
-
-Add to `AndroidManifest.xml`:
-```xml
-<application
-    android:networkSecurityConfig="@xml/network_security_config"
-    ...>
-```
-
-### Permissions (Android)
-
-Add to `AndroidManifest.xml`:
+Add to `android/app/src/main/AndroidManifest.xml`:
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.CAMERA" />
 ```
 
 ## 📡 API Endpoints
 
-### Authentication
-- `POST /api/auth/signup` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
+### Auth
+- `POST /api/auth/signup` - Create account
+- `POST /api/auth/login` - Login
 
 ### Posts
 - `GET /api/posts` - Get all posts
-- `POST /api/posts` - Create new post
-- `GET /api/posts/:id` - Get single post
-- `PUT /api/posts/:id` - Update post
-- `DELETE /api/posts/:id` - Delete post
-- `POST /api/posts/:id/like` - Like/unlike post
-- `POST /api/posts/:id/comment` - Add comment
-- `POST /api/posts/:id/share` - Share post
-
-### Questions
-- `GET /api/questions` - Get all questions
-- `POST /api/questions` - Ask question
-- `GET /api/questions/:id` - Get question details
-- `POST /api/questions/:id/answer` - Post answer
-
-### Chat
-- `GET /api/chat/conversations` - Get user's conversations
-- `GET /api/chat/:userId` - Get chat with specific user
-- `POST /api/chat/:userId` - Send message
+- `POST /api/posts` - Create post
+- `POST /api/posts/:id/like` - Like post
+- `POST /api/posts/:id/comment` - Comment on post
 
 ### Users
 - `GET /api/users/:id` - Get user profile
-- `PUT /api/users/:id` - Update profile
-- `GET /api/users/:id/posts` - Get user's posts
+- `PUT /api/users/profile` - Update profile
 
-## 🔐 Authentication Flow
+### Chat
+- `GET /api/chat/:userId` - Get messages
+- `POST /api/chat/:userId` - Send message
 
-1. User signs up or logs in
-2. Backend validates credentials and returns JWT token
-3. Android app stores token in DataStore
-4. Token is included in Authorization header for subsequent requests
-5. Backend middleware verifies token for protected routes
+## 🗄️ Database Models
 
-## 💾 Database Schema
-
-### User Model
+### User
 ```javascript
 {
-  username: String (unique),
-  email: String (unique),
-  password: String (hashed),
-  fullName: String,
-  bio: String,
-  profilePicture: String,
-  followers: [ObjectId],
-  following: [ObjectId],
-  createdAt: Date
+  username: String,
+  email: String,
+  password: String,
+  profilePic: String,
+  bio: String
 }
 ```
 
-### Post Model
+### Post
 ```javascript
 {
-  user: ObjectId (ref: User),
+  user: ObjectId,
   content: String,
-  images: [String],
+  image: String,
   likes: [ObjectId],
   comments: [{
     user: ObjectId,
     text: String,
     createdAt: Date
-  }],
-  shares: Number,
-  createdAt: Date
+  }]
 }
 ```
 
-### Message Model
+### Message
 ```javascript
 {
-  sender: ObjectId (ref: User),
-  recipient: ObjectId (ref: User),
-  content: String,
-  read: Boolean,
+  sender: ObjectId,
+  receiver: ObjectId,
+  message: String,
   createdAt: Date
 }
 ```
 
-## 🧪 Testing
+## 🐛 Common Problems & Solutions
 
-### Backend Testing
+### Problem: App won't install
+**Solution:** 
+- Enable "Install from Unknown Sources" in phone settings
+- Make sure you built the APK correctly
+
+### Problem: Can't connect to server
+**Solution:**
+- For emulator: Use `http://10.0.2.2:5000`
+- For real phone: Use your computer's IP like `http://192.168.1.100:5000`
+- Make sure phone and computer are on same WiFi
+- Check if server is running
+
+### Problem: Images not uploading
+**Solution:**
+- Check camera/storage permissions in AndroidManifest.xml
+- Make sure `uploads` folder exists in backend
+
+### Problem: Build failed
+**Solution:**
 ```bash
-# Run tests
-npm test
-
-# Run with coverage
-npm run test:coverage
+cd android
+./gradlew clean
+cd ..
+npm start --reset-cache
+npm run android
 ```
 
-### Android Testing
-```bash
-# Run unit tests
-./gradlew test
+## 📱 Testing on Real Phone
 
-# Run instrumentation tests
-./gradlew connectedAndroidTest
+1. **Enable Developer Mode on phone:**
+   - Go to Settings > About Phone
+   - Tap "Build Number" 7 times
+   - Developer options will appear
+
+2. **Enable USB Debugging:**
+   - Go to Settings > Developer Options
+   - Turn on "USB Debugging"
+
+3. **Connect phone to computer with USB cable**
+
+4. **Check if phone is detected:**
+```bash
+adb devices
 ```
 
-## 🔨 Building for Production
-
-### Backend
+5. **Run the app:**
 ```bash
-# Set environment to production
-NODE_ENV=production
-
-# Use process manager like PM2
-npm install -g pm2
-pm2 start src/server.js --name social-media-api
+npm run android
 ```
 
-### Android
-1. Generate signed APK/Bundle in Android Studio
-2. Build > Generate Signed Bundle/APK
-3. Follow the wizard to create keystore and build
+## 🌐 Deploy Backend (Optional)
 
-## 🐛 Common Issues & Solutions
+You can deploy your backend to:
+- **Heroku** (free tier available)
+- **Railway** (free tier available)
+- **Render** (free tier available)
 
-### Issue: Cannot connect to backend from Android
-- **Solution**: Make sure you're using the correct IP address
-  - Emulator: Use `10.0.2.2` instead of `localhost`
-  - Physical device: Use your computer's local IP address
+Then update your `.env` in mobile app with the deployed URL.
 
-### Issue: MongoDB connection failed
-- **Solution**: 
-  - Ensure MongoDB is running
-  - Check connection string in `.env`
-  - Verify network access if using MongoDB Atlas
+## 📝 Quick Start Checklist
 
-### Issue: Socket.io not connecting
-- **Solution**:
-  - Check CORS settings in backend
-  - Verify socket URL in Android app
-  - Ensure server is running
+- [ ] Install Node.js
+- [ ] Install MongoDB
+- [ ] Install Android Studio
+- [ ] Setup backend (npm install)
+- [ ] Start MongoDB
+- [ ] Start backend server (npm run dev)
+- [ ] Setup React Native app (npm install)
+- [ ] Run app (npm run android)
+- [ ] Build APK for phone
+- [ ] Install APK on phone
 
-### Issue: Images not uploading
-- **Solution**:
-  - Check file size limits in Multer configuration
-  - Verify Cloudinary credentials
-  - Ensure proper permissions in AndroidManifest.xml
+## 💡 Tips
 
-## 📱 Features to Implement Next
+- Always start the backend server before running the app
+- Keep MongoDB running in the background
+- Use Android emulator for testing first
+- Build debug APK for testing, release APK for sharing
+- Make sure phone and computer are on same WiFi for real device testing
 
-- [ ] Push notifications using FCM
-- [ ] Stories feature
-- [ ] Video posts
-- [ ] Live streaming
-- [ ] Groups/Communities
-- [ ] Advanced search
-- [ ] Content moderation
-- [ ] Analytics dashboard
+## 🎯 Next Steps After Setup
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👥 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📞 Support
-
-For issues and questions:
-- Create an issue in the GitHub repository
-- Email: support@yourapp.com
-
-## 🙏 Acknowledgments
-
-- Node.js and Express.js communities
-- Android Jetpack Compose team
-- MongoDB team
-- All open-source contributors
+1. Create your account in the app
+2. Add a profile picture
+3. Create your first post
+4. Add friends and start chatting!
 
 ---
+
+**Need Help?** Check the common problems section or Google the error message you're getting!
 
 **Happy Coding! 🚀**
